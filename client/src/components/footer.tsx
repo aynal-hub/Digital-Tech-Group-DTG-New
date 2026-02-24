@@ -41,7 +41,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <img src={logoImg} alt="Logo" className="w-8 h-8 rounded-md" />
+              <img src={logoImg} alt="Logo" className="w-12 h-12 rounded-md" />
               <span className="text-lg font-bold">
                 {getSetting("site_name") || "Digital Tech Group"}
               </span>
