@@ -19,17 +19,17 @@ function AnimatedCounter({ value }: { value: number }) {
   return <span>{value}+</span>;
 }
 
-function HeroVisual({ services, projects, testimonials }: { services?: Service[]; projects?: Project[]; testimonials?: Testimonial[] }) {
-  const projectCount = projects?.filter(p => p.isActive).length || 0;
-  const clientCount = testimonials?.filter(t => t.isActive).length || 0;
-  const serviceCount = services?.filter(s => s.isActive).length || 0;
-  const totalOrders = services?.reduce((acc, s) => acc + (s.completedOrders || 0), 0) || 0;
+function HeroVisual({ services, projects, testimonials, settings }: { services?: Service[]; projects?: Project[]; testimonials?: Testimonial[]; settings?: Record<string, string> }) {
+  const projectCount = settings?.stats_projects_done || String(projects?.filter(p => p.isActive).length || 0);
+  const clientCount = settings?.stats_happy_clients || String(testimonials?.filter(t => t.isActive).length || 0);
+  const serviceCount = settings?.stats_expert_services || String(services?.filter(s => s.isActive).length || 0);
+  const totalOrders = settings?.stats_orders_done || String(services?.reduce((acc, s) => acc + (s.completedOrders || 0), 0) || 0);
 
   const stats = [
     { icon: TrendingUp, value: `${totalOrders}+`, label: "Orders Completed", color: "text-primary", bg: "bg-primary/15" },
     { icon: Globe, value: `${clientCount}+`, label: "Happy Clients", color: "text-emerald-500", bg: "bg-emerald-500/15" },
     { icon: Rocket, value: `${projectCount}+`, label: "Projects Done", color: "text-violet-500", bg: "bg-violet-500/15" },
-    { icon: Award, value: `${serviceCount}`, label: "Expert Services", color: "text-amber-500", bg: "bg-amber-500/15" },
+    { icon: Award, value: `${serviceCount}+`, label: "Expert Services", color: "text-amber-500", bg: "bg-amber-500/15" },
   ];
 
   return (
@@ -61,6 +61,7 @@ export default function Home() {
   const { data: projects } = useQuery<Project[]>({ queryKey: ["/api/projects"] });
   const { data: testimonials } = useQuery<Testimonial[]>({ queryKey: ["/api/testimonials"] });
   const { data: team } = useQuery<TeamMember[]>({ queryKey: ["/api/team"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
 
   const featuredServices = services?.filter((s) => s.isActive).slice(0, 3) || [];
   const featuredProjects = projects?.filter((p) => p.isActive).slice(0, 4) || [];
@@ -112,7 +113,7 @@ export default function Home() {
             </motion.div>
 
             <div className="relative hidden lg:block">
-              <HeroVisual services={services} projects={projects} testimonials={testimonials} />
+              <HeroVisual services={services} projects={projects} testimonials={testimonials} settings={settings} />
             </div>
           </div>
         </div>
@@ -124,10 +125,10 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { label: "Expert Services", count: services?.filter(s => s.isActive).length || 0, icon: Target, href: "/services", gradient: "from-primary/20 to-primary/5", iconColor: "text-primary" },
-              { label: "Projects Done", count: projects?.filter(p => p.isActive).length || 0, icon: Rocket, href: "/portfolio", gradient: "from-violet-500/20 to-violet-500/5", iconColor: "text-violet-500" },
-              { label: "Happy Clients", count: testimonials?.filter(t => t.isActive).length || 0, icon: Users, href: "/testimonials", gradient: "from-emerald-500/20 to-emerald-500/5", iconColor: "text-emerald-500" },
-              { label: "Orders Done", count: services?.reduce((a, s) => a + (s.completedOrders || 0), 0) || 0, icon: TrendingUp, href: "/services", gradient: "from-amber-500/20 to-amber-500/5", iconColor: "text-amber-500" },
+              { label: "Expert Services", count: settings?.stats_expert_services || String(services?.filter(s => s.isActive).length || 0), icon: Target, href: "/services", gradient: "from-primary/20 to-primary/5", iconColor: "text-primary" },
+              { label: "Projects Done", count: settings?.stats_projects_done || String(projects?.filter(p => p.isActive).length || 0), icon: Rocket, href: "/portfolio", gradient: "from-violet-500/20 to-violet-500/5", iconColor: "text-violet-500" },
+              { label: "Happy Clients", count: settings?.stats_happy_clients || String(testimonials?.filter(t => t.isActive).length || 0), icon: Users, href: "/testimonials", gradient: "from-emerald-500/20 to-emerald-500/5", iconColor: "text-emerald-500" },
+              { label: "Orders Done", count: settings?.stats_orders_done || String(services?.reduce((a, s) => a + (s.completedOrders || 0), 0) || 0), icon: TrendingUp, href: "/services", gradient: "from-amber-500/20 to-amber-500/5", iconColor: "text-amber-500" },
             ].map((stat, i) => (
               <Link key={stat.label} href={stat.href}>
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
@@ -137,7 +138,7 @@ export default function Home() {
                         <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
                       </div>
                       <p className="text-3xl font-bold mb-1">
-                        <AnimatedCounter value={stat.count} />
+                        {stat.count}+
                       </p>
                       <p className="text-muted-foreground text-xs font-medium">{stat.label}</p>
                     </CardContent>

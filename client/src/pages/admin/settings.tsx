@@ -28,6 +28,12 @@ const settingGroups = [
     { key: "social_whatsapp", label: "WhatsApp Number", type: "text" },
     { key: "social_telegram", label: "Telegram URL", type: "text" },
   ]},
+  { label: "Homepage Stats", keys: [
+    { key: "stats_expert_services", label: "Expert Services Count", type: "text" },
+    { key: "stats_projects_done", label: "Projects Done Count", type: "text" },
+    { key: "stats_happy_clients", label: "Happy Clients Count", type: "text" },
+    { key: "stats_orders_done", label: "Orders Done Count", type: "text" },
+  ]},
   { label: "SEO", keys: [
     { key: "meta_title", label: "Default Meta Title", type: "text" },
     { key: "meta_description", label: "Default Meta Description", type: "textarea" },
