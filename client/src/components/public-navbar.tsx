@@ -38,8 +38,8 @@ export function PublicNavbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border/50"
-          : "bg-transparent"
+          ? "bg-background/95 backdrop-blur-md border-b border-border/50 shadow-sm"
+          : "bg-background/90 backdrop-blur-sm"
       }`}
       data-testid="navbar"
     >
@@ -61,7 +61,7 @@ export function PublicNavbar() {
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
                     location === item.href
                       ? "text-primary bg-primary/10"
-                      : "text-muted-foreground"
+                      : "text-foreground/80 hover:text-foreground hover:bg-accent/50"
                   }`}
                   data-testid={`link-nav-${item.label.toLowerCase()}`}
                 >
@@ -108,7 +108,7 @@ export function PublicNavbar() {
                     className={`block px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${
                       location === item.href
                         ? "text-primary bg-primary/10"
-                        : "text-muted-foreground"
+                        : "text-foreground/80 hover:text-foreground hover:bg-accent/50"
                     }`}
                   >
                     {item.label}
