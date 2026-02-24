@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, Briefcase, FileText, FolderOpen, Users, Star, Mail, Package, MessageSquare, Settings, LogOut, Menu, X, CreditCard, Video, Shield, User } from "lucide-react";
-import logoImg from "@assets/image_1771920809861.png";
+import { LayoutDashboard, Briefcase, FileText, FolderOpen, Users, Star, Mail, Package, MessageSquare, Settings, LogOut, Menu, X, Zap, CreditCard, Video, Shield, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { apiRequest } from "@/lib/queryClient";
@@ -65,7 +64,9 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <aside className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-card border-r border-border flex flex-col transition-transform lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="p-4 border-b border-border flex items-center justify-between gap-2">
           <Link href="/admin" className="flex items-center gap-2">
-            <img src={logoImg} alt="Logo" className="w-8 h-8 rounded-md" />
+            <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+              <Zap className="w-5 h-5 text-primary-foreground" />
+            </div>
             <span className="font-bold text-sm">Admin Panel</span>
           </Link>
           <Button size="icon" variant="ghost" className="lg:hidden" onClick={() => setSidebarOpen(false)}>
@@ -90,7 +91,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         <div className="p-3 border-t border-border space-y-2">
           <Link href="/">
             <span className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-muted-foreground cursor-pointer">
-              <img src={logoImg} alt="" className="w-4 h-4 rounded-sm" /> View Website
+              <Zap className="w-4 h-4" /> View Website
             </span>
           </Link>
           <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm text-destructive cursor-pointer" data-testid="button-admin-logout">

@@ -1,6 +1,5 @@
 import { Link } from "wouter";
-import { Mail, Phone, MapPin } from "lucide-react";
-import logoImg from "@assets/image_1771920809861.png";
+import { Zap, Mail, Phone, MapPin } from "lucide-react";
 import { SiLinkedin, SiFacebook, SiInstagram, SiYoutube, SiTelegram, SiWhatsapp } from "react-icons/si";
 import { useQuery } from "@tanstack/react-query";
 
@@ -41,7 +40,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <img src={logoImg} alt="Logo" className="w-8 h-8 rounded-md" />
+              <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+                <Zap className="w-5 h-5 text-primary-foreground" />
+              </div>
               <span className="text-lg font-bold">
                 {getSetting("site_name") || "Digital Tech Group"}
               </span>
