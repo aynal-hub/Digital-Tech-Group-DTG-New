@@ -25,81 +25,33 @@ function HeroVisual({ services, projects, testimonials }: { services?: Service[]
   const serviceCount = services?.filter(s => s.isActive).length || 0;
   const totalOrders = services?.reduce((acc, s) => acc + (s.completedOrders || 0), 0) || 0;
 
+  const stats = [
+    { icon: TrendingUp, value: `${totalOrders}+`, label: "Orders Completed", color: "text-primary", bg: "bg-primary/15" },
+    { icon: Globe, value: `${clientCount}+`, label: "Happy Clients", color: "text-emerald-500", bg: "bg-emerald-500/15" },
+    { icon: Rocket, value: `${projectCount}+`, label: "Projects Done", color: "text-violet-500", bg: "bg-violet-500/15" },
+    { icon: Award, value: `${serviceCount}`, label: "Expert Services", color: "text-amber-500", bg: "bg-amber-500/15" },
+  ];
+
   return (
-    <div className="relative w-full aspect-square max-w-lg mx-auto">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
-
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48">
-        <motion.div
-          className="w-full h-full bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-5 flex flex-col justify-center items-center text-primary-foreground shadow-lg shadow-primary/20"
-          initial={{ opacity: 0, y: -20, rotate: -3 }}
-          animate={{ opacity: 1, y: 0, rotate: -3 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-        >
-          <TrendingUp className="w-8 h-8 mb-2" />
-          <span className="text-4xl font-bold">{totalOrders}+</span>
-          <span className="text-xs mt-1 opacity-90 font-medium">Orders Completed</span>
-        </motion.div>
+    <div className="relative max-w-md mx-auto">
+      <div className="absolute -inset-6 bg-gradient-to-br from-primary/20 via-primary/5 to-transparent rounded-3xl blur-2xl" />
+      <div className="relative grid grid-cols-2 gap-4">
+        {stats.map((stat, i) => (
+          <motion.div
+            key={stat.label}
+            className="bg-card border border-border/50 rounded-2xl p-5 flex flex-col items-center text-center shadow-lg"
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 + i * 0.12 }}
+          >
+            <div className={`w-12 h-12 rounded-xl ${stat.bg} flex items-center justify-center mb-3`}>
+              <stat.icon className={`w-6 h-6 ${stat.color}`} />
+            </div>
+            <span className="text-3xl font-bold">{stat.value}</span>
+            <span className="text-xs text-muted-foreground mt-1 font-medium">{stat.label}</span>
+          </motion.div>
+        ))}
       </div>
-
-      <motion.div
-        className="absolute top-28 right-0 bg-card border border-border/50 rounded-xl p-4 flex items-center gap-3 shadow-lg min-w-[180px]"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-      >
-        <div className="w-10 h-10 rounded-lg bg-emerald-500/15 flex items-center justify-center shrink-0">
-          <Globe className="w-5 h-5 text-emerald-500" />
-        </div>
-        <div>
-          <span className="text-2xl font-bold">{clientCount}+</span>
-          <p className="text-xs text-muted-foreground">Happy Clients</p>
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-24 left-0 bg-card border border-border/50 rounded-xl p-4 flex items-center gap-3 shadow-lg min-w-[180px]"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.7 }}
-      >
-        <div className="w-10 h-10 rounded-lg bg-violet-500/15 flex items-center justify-center shrink-0">
-          <Rocket className="w-5 h-5 text-violet-500" />
-        </div>
-        <div>
-          <span className="text-2xl font-bold">{projectCount}+</span>
-          <p className="text-xs text-muted-foreground">Projects Done</p>
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-4 right-8 bg-card border border-border/50 rounded-xl p-4 flex items-center gap-3 shadow-lg min-w-[170px]"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.9 }}
-      >
-        <div className="w-10 h-10 rounded-lg bg-amber-500/15 flex items-center justify-center shrink-0">
-          <Award className="w-5 h-5 text-amber-500" />
-        </div>
-        <div>
-          <span className="text-2xl font-bold">{serviceCount}</span>
-          <p className="text-xs text-muted-foreground">Expert Services</p>
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center border border-primary/20"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.5, delay: 1.1 }}
-      >
-        <Zap className="w-8 h-8 text-primary" />
-      </motion.div>
-
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" viewBox="0 0 400 400">
-        <circle cx="200" cy="200" r="150" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5" strokeDasharray="4 8" />
-        <circle cx="200" cy="200" r="100" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5" strokeDasharray="4 8" />
-      </svg>
     </div>
   );
 }

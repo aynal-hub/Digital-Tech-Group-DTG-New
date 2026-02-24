@@ -45,13 +45,14 @@ export function PublicNavbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-2 h-16">
-          <Link href="/" className="flex items-center gap-2 shrink-0" data-testid="link-logo">
-            <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
-              <Zap className="w-5 h-5 text-primary-foreground" />
+          <Link href="/" className="flex items-center gap-2.5 shrink-0" data-testid="link-logo">
+            <div className="w-9 h-9 bg-gradient-to-br from-primary to-primary/70 rounded-lg flex items-center justify-center shadow-md shadow-primary/20">
+              <span className="text-primary-foreground font-black text-sm tracking-tighter">DTG</span>
             </div>
-            <span className="text-lg font-bold">
-              Digital<span className="text-primary">Tech</span>
-            </span>
+            <div className="hidden sm:flex flex-col leading-none">
+              <span className="text-sm font-bold tracking-wide">Digital Tech Group</span>
+              <span className="text-[10px] text-muted-foreground tracking-widest uppercase">Agency</span>
+            </div>
           </Link>
 
           <div className="hidden xl:flex items-center gap-1 flex-wrap">
