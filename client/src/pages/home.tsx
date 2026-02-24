@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Star, Users, Briefcase, FileText, CheckCircle, Quote } from "lucide-react";
+import { ArrowRight, Sparkles, Star, Users, Briefcase, FileText, CheckCircle, Quote, TrendingUp, Globe, Rocket, Target, Award, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +17,91 @@ const fadeUp = {
 
 function AnimatedCounter({ value }: { value: number }) {
   return <span>{value}+</span>;
+}
+
+function HeroVisual({ services, projects, testimonials }: { services?: Service[]; projects?: Project[]; testimonials?: Testimonial[] }) {
+  const projectCount = projects?.filter(p => p.isActive).length || 0;
+  const clientCount = testimonials?.filter(t => t.isActive).length || 0;
+  const serviceCount = services?.filter(s => s.isActive).length || 0;
+  const totalOrders = services?.reduce((acc, s) => acc + (s.completedOrders || 0), 0) || 0;
+
+  return (
+    <div className="relative w-full aspect-square max-w-lg mx-auto">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDuration: "4s" }} />
+
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48">
+        <motion.div
+          className="w-full h-full bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-5 flex flex-col justify-center items-center text-primary-foreground shadow-lg shadow-primary/20"
+          initial={{ opacity: 0, y: -20, rotate: -3 }}
+          animate={{ opacity: 1, y: 0, rotate: -3 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+        >
+          <TrendingUp className="w-8 h-8 mb-2" />
+          <span className="text-4xl font-bold">{totalOrders}+</span>
+          <span className="text-xs mt-1 opacity-90 font-medium">Orders Completed</span>
+        </motion.div>
+      </div>
+
+      <motion.div
+        className="absolute top-28 right-0 bg-card border border-border/50 rounded-xl p-4 flex items-center gap-3 shadow-lg min-w-[180px]"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+      >
+        <div className="w-10 h-10 rounded-lg bg-emerald-500/15 flex items-center justify-center shrink-0">
+          <Globe className="w-5 h-5 text-emerald-500" />
+        </div>
+        <div>
+          <span className="text-2xl font-bold">{clientCount}+</span>
+          <p className="text-xs text-muted-foreground">Happy Clients</p>
+        </div>
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-24 left-0 bg-card border border-border/50 rounded-xl p-4 flex items-center gap-3 shadow-lg min-w-[180px]"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.7 }}
+      >
+        <div className="w-10 h-10 rounded-lg bg-violet-500/15 flex items-center justify-center shrink-0">
+          <Rocket className="w-5 h-5 text-violet-500" />
+        </div>
+        <div>
+          <span className="text-2xl font-bold">{projectCount}+</span>
+          <p className="text-xs text-muted-foreground">Projects Done</p>
+        </div>
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-4 right-8 bg-card border border-border/50 rounded-xl p-4 flex items-center gap-3 shadow-lg min-w-[170px]"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.9 }}
+      >
+        <div className="w-10 h-10 rounded-lg bg-amber-500/15 flex items-center justify-center shrink-0">
+          <Award className="w-5 h-5 text-amber-500" />
+        </div>
+        <div>
+          <span className="text-2xl font-bold">{serviceCount}</span>
+          <p className="text-xs text-muted-foreground">Expert Services</p>
+        </div>
+      </motion.div>
+
+      <motion.div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center border border-primary/20"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.5, delay: 1.1 }}
+      >
+        <Zap className="w-8 h-8 text-primary" />
+      </motion.div>
+
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" viewBox="0 0 400 400">
+        <circle cx="200" cy="200" r="150" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5" strokeDasharray="4 8" />
+        <circle cx="200" cy="200" r="100" fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5" strokeDasharray="4 8" />
+      </svg>
+    </div>
+  );
 }
 
 export default function Home() {
@@ -74,73 +159,38 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <motion.div
-              className="relative hidden lg:block"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <div className="relative w-full aspect-square max-w-lg mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-3xl rotate-6" />
-                <div className="absolute inset-0 bg-gradient-to-tl from-primary/10 to-transparent rounded-3xl -rotate-3" />
-                <div className="relative bg-card rounded-3xl p-8 border border-border/50 space-y-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <Briefcase className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Projects Delivered</p>
-                      <p className="text-2xl font-bold text-primary">{projects?.length || 0}+</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
-                      <Users className="w-6 h-6 text-green-600 dark:text-green-400" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Happy Clients</p>
-                      <p className="text-2xl font-bold text-green-600 dark:text-green-400">{testimonials?.length || 0}+</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center">
-                      <FileText className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Services Available</p>
-                      <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{services?.length || 0}+</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            <div className="relative hidden lg:block">
+              <HeroVisual services={services} projects={projects} testimonials={testimonials} />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-card/50" data-testid="section-stats">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="py-16 relative overflow-hidden" data-testid="section-stats">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { label: "Services", count: services?.filter(s => s.isActive).length || 0, icon: Briefcase, href: "/services", color: "text-primary" },
-              { label: "Projects", count: projects?.filter(p => p.isActive).length || 0, icon: FileText, href: "/portfolio", color: "text-green-600 dark:text-green-400" },
-              { label: "Blog Posts", count: 0, icon: FileText, href: "/blog", color: "text-orange-600 dark:text-orange-400" },
-            ].map((stat) => (
+              { label: "Expert Services", count: services?.filter(s => s.isActive).length || 0, icon: Target, href: "/services", gradient: "from-primary/20 to-primary/5", iconColor: "text-primary" },
+              { label: "Projects Done", count: projects?.filter(p => p.isActive).length || 0, icon: Rocket, href: "/portfolio", gradient: "from-violet-500/20 to-violet-500/5", iconColor: "text-violet-500" },
+              { label: "Happy Clients", count: testimonials?.filter(t => t.isActive).length || 0, icon: Users, href: "/testimonials", gradient: "from-emerald-500/20 to-emerald-500/5", iconColor: "text-emerald-500" },
+              { label: "Orders Done", count: services?.reduce((a, s) => a + (s.completedOrders || 0), 0) || 0, icon: TrendingUp, href: "/services", gradient: "from-amber-500/20 to-amber-500/5", iconColor: "text-amber-500" },
+            ].map((stat, i) => (
               <Link key={stat.label} href={stat.href}>
-                <Card className="hover-elevate cursor-pointer transition-transform" data-testid={`card-stat-${stat.label.toLowerCase()}`}>
-                  <CardContent className="p-6 flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <stat.icon className={`w-7 h-7 ${stat.color}`} />
-                    </div>
-                    <div>
-                      <p className="text-3xl font-bold">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
+                  <Card className="hover-elevate cursor-pointer border-border/50 overflow-hidden" data-testid={`card-stat-${stat.label.toLowerCase().replace(/\s/g, "-")}`}>
+                    <CardContent className={`p-6 text-center bg-gradient-to-b ${stat.gradient}`}>
+                      <div className="w-12 h-12 rounded-xl bg-card/80 flex items-center justify-center mx-auto mb-3 border border-border/50">
+                        <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
+                      </div>
+                      <p className="text-3xl font-bold mb-1">
                         <AnimatedCounter value={stat.count} />
                       </p>
-                      <p className="text-muted-foreground text-sm">{stat.label}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+                      <p className="text-muted-foreground text-xs font-medium">{stat.label}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </Link>
             ))}
           </div>
