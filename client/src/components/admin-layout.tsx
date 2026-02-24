@@ -65,7 +65,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <aside className={`fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-card border-r border-border flex flex-col transition-transform lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="p-4 border-b border-border flex items-center justify-between gap-2">
           <Link href="/admin" className="flex items-center gap-2">
-            <img src={logoImg} alt="Logo" className="w-10 h-10 rounded-md" />
+            <img src={logoImg} alt="Logo" className="w-8 h-8 rounded-md" />
             <span className="font-bold text-sm">Admin Panel</span>
           </Link>
           <Button size="icon" variant="ghost" className="lg:hidden" onClick={() => setSidebarOpen(false)}>

@@ -49,7 +49,7 @@ export function PublicNavbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-2 h-16">
           <Link href="/" className="flex items-center gap-2.5 shrink-0" data-testid="link-logo">
-            <img src={logoImg} alt="Logo" className="w-12 h-12 rounded-lg shadow-md shadow-primary/20" />
+            <img src={logoImg} alt="Logo" className="w-9 h-9 rounded-lg shadow-md shadow-primary/20" />
             <span className="hidden sm:inline text-sm font-bold tracking-wide">{settings?.site_name || "Digital Tech Group"}</span>
           </Link>
 

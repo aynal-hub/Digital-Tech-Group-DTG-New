@@ -36,7 +36,7 @@ export default function AdminLogin() {
       <Card className="w-full max-w-md">
         <CardContent className="p-8">
           <div className="text-center mb-8">
-            <img src={logoImg} alt="Logo" className="w-16 h-16 rounded-lg mx-auto mb-4" />
+            <img src={logoImg} alt="Logo" className="w-12 h-12 rounded-lg mx-auto mb-4" />
             <h1 className="text-2xl font-bold">Admin Login</h1>
             <p className="text-sm text-muted-foreground mt-1">{settings?.site_name || "Digital Tech Group"}</p>
           </div>
