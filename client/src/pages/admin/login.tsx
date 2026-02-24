@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { Zap, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
+import logoImg from "@assets/image_1771920809861.png";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -35,9 +36,7 @@ export default function AdminLogin() {
       <Card className="w-full max-w-md">
         <CardContent className="p-8">
           <div className="text-center mb-8">
-            <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mx-auto mb-4">
-              <Zap className="w-7 h-7 text-primary-foreground" />
-            </div>
+            <img src={logoImg} alt="Logo" className="w-12 h-12 rounded-lg mx-auto mb-4" />
             <h1 className="text-2xl font-bold">Admin Login</h1>
             <p className="text-sm text-muted-foreground mt-1">{settings?.site_name || "Digital Tech Group"}</p>
           </div>

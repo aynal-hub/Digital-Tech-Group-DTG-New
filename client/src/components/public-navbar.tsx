@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sun, Moon, Zap } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
+import logoImg from "@assets/image_1771920809861.png";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { motion, AnimatePresence } from "framer-motion";
@@ -48,9 +49,7 @@ export function PublicNavbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-2 h-16">
           <Link href="/" className="flex items-center gap-2.5 shrink-0" data-testid="link-logo">
-            <div className="w-9 h-9 bg-gradient-to-br from-primary to-primary/70 rounded-lg flex items-center justify-center shadow-md shadow-primary/20">
-              <span className="text-primary-foreground font-black text-sm tracking-tighter">DTG</span>
-            </div>
+            <img src={logoImg} alt="Logo" className="w-9 h-9 rounded-lg shadow-md shadow-primary/20" />
             <span className="hidden sm:inline text-sm font-bold tracking-wide">{settings?.site_name || "Digital Tech Group"}</span>
           </Link>
 
