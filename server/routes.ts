@@ -64,6 +64,36 @@ export async function registerRoutes(
     res.json({ url: `/uploads/${req.file.filename}` });
   });
 
+  // Ensure admin accounts exist on startup
+  try {
+    const existingAdmins = await storage.getAdminByEmail("aynalhossain104@gmail.com");
+    if (!existingAdmins) {
+      const hashedPassword = await bcrypt.hash("admin123", 10);
+      await storage.createAdmin({
+        email: "aynalhossain104@gmail.com",
+        password: hashedPassword,
+        name: "Super Admin",
+        role: "SUPER_ADMIN",
+        isSuperAdmin: true,
+      });
+      console.log("Super admin account created on startup");
+    }
+    const regularAdmin = await storage.getAdminByEmail("admin@digitaltechgroup.com");
+    if (!regularAdmin) {
+      const hashedPassword = await bcrypt.hash("admin123", 10);
+      await storage.createAdmin({
+        email: "admin@digitaltechgroup.com",
+        password: hashedPassword,
+        name: "Admin",
+        role: "ADMIN",
+        isSuperAdmin: false,
+      });
+      console.log("Regular admin account created on startup");
+    }
+  } catch (e) {
+    console.error("Error ensuring admin accounts:", e);
+  }
+
   // ---- AUTH ----
   app.post("/api/admin/login", async (req, res) => {
     try {
