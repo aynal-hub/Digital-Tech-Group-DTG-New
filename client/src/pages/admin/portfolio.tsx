@@ -10,10 +10,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog, useConfirmDialog } from "@/components/confirm-dialog";
+import { ImageInput } from "@/components/image-input";
 import type { Project } from "@shared/schema";
 
 export default function AdminPortfolio() {
   const { toast } = useToast();
+  const { confirm, dialogProps } = useConfirmDialog();
   const { data: projects, isLoading } = useQuery<Project[]>({ queryKey: ["/api/projects"] });
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<Project | null>(null);
@@ -65,7 +68,7 @@ export default function AdminPortfolio() {
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(p)}><Edit className="w-4 h-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => { if (confirm("Delete?")) del.mutate(p.id); }}><Trash2 className="w-4 h-4" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => confirm(() => del.mutate(p.id), "Delete Project?", "This action cannot be undone.")}><Trash2 className="w-4 h-4" /></Button>
                 </div>
               </CardContent>
             </Card>
@@ -87,7 +90,7 @@ export default function AdminPortfolio() {
             </div>
             <div className="space-y-2"><Label>Short Description</Label><Input value={form.shortDescription} onChange={(e) => setForm({ ...form, shortDescription: e.target.value })} /></div>
             <div className="space-y-2"><Label>Description</Label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={4} required /></div>
-            <div className="space-y-2"><Label>Image URL</Label><Input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} /></div>
+            <ImageInput value={form.imageUrl} onChange={(url) => setForm({ ...form, imageUrl: url })} label="Image" />
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2"><Label>Project URL</Label><Input value={form.projectUrl} onChange={(e) => setForm({ ...form, projectUrl: e.target.value })} /></div>
               <div className="space-y-2"><Label>Completion Date</Label><Input value={form.completionDate} onChange={(e) => setForm({ ...form, completionDate: e.target.value })} placeholder="2025-01" /></div>
@@ -101,6 +104,7 @@ export default function AdminPortfolio() {
           </form>
         </DialogContent>
       </Dialog>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

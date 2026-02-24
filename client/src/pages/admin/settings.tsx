@@ -26,6 +26,7 @@ const settingGroups = [
     { key: "social_instagram", label: "Instagram URL", type: "text" },
     { key: "social_youtube", label: "YouTube URL", type: "text" },
     { key: "social_whatsapp", label: "WhatsApp Number", type: "text" },
+    { key: "social_telegram", label: "Telegram URL", type: "text" },
   ]},
   { label: "SEO", keys: [
     { key: "meta_title", label: "Default Meta Title", type: "text" },

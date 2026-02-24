@@ -11,10 +11,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ConfirmDialog, useConfirmDialog } from "@/components/confirm-dialog";
+import { ImageInput } from "@/components/image-input";
 import type { Service } from "@shared/schema";
 
 export default function AdminServices() {
   const { toast } = useToast();
+  const { confirm, dialogProps } = useConfirmDialog();
   const { data: services, isLoading } = useQuery<Service[]>({ queryKey: ["/api/services"] });
   const [search, setSearch] = useState("");
   const [editingService, setEditingService] = useState<Service | null>(null);
@@ -95,7 +98,7 @@ export default function AdminServices() {
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(s)} data-testid={`button-edit-service-${s.id}`}><Edit className="w-4 h-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => { if (confirm("Delete this service?")) deleteMutation.mutate(s.id); }} data-testid={`button-delete-service-${s.id}`}><Trash2 className="w-4 h-4" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => confirm(() => deleteMutation.mutate(s.id), "Delete Service?", "This action cannot be undone.")} data-testid={`button-delete-service-${s.id}`}><Trash2 className="w-4 h-4" /></Button>
                 </div>
               </CardContent>
             </Card>
@@ -119,7 +122,7 @@ export default function AdminServices() {
             </div>
             <div className="space-y-2"><Label>Short Description</Label><Input value={form.shortDescription} onChange={(e) => setForm({ ...form, shortDescription: e.target.value })} /></div>
             <div className="space-y-2"><Label>Description</Label><Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={4} required /></div>
-            <div className="space-y-2"><Label>Image URL</Label><Input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} /></div>
+            <ImageInput value={form.imageUrl} onChange={(url) => setForm({ ...form, imageUrl: url })} label="Image" />
             <div className="space-y-2"><Label>Features (comma separated)</Label><Input value={form.features} onChange={(e) => setForm({ ...form, features: e.target.value })} placeholder="Feature 1, Feature 2, Feature 3" /></div>
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="space-y-2"><Label>Completed Orders</Label><Input type="number" value={form.completedOrders} onChange={(e) => setForm({ ...form, completedOrders: parseInt(e.target.value) || 0 })} /></div>
@@ -137,6 +140,7 @@ export default function AdminServices() {
           </form>
         </DialogContent>
       </Dialog>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

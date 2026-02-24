@@ -3,8 +3,30 @@ import { createServer, type Server } from "http";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import bcrypt from "bcryptjs";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
 import { storage } from "./storage";
 import { loginSchema, insertContactMessageSchema, insertSampleRequestSchema } from "@shared/schema";
+
+const uploadDir = path.join(process.cwd(), "uploads");
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, uploadDir),
+    filename: (_req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      cb(null, `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+    },
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    const allowed = /\.(jpg|jpeg|png|gif|webp|svg|ico)$/i;
+    if (allowed.test(path.extname(file.originalname))) cb(null, true);
+    else cb(new Error("Only image files are allowed"));
+  },
+});
 
 const PgStore = connectPgSimple(session);
 
@@ -35,6 +57,13 @@ export async function registerRoutes(
     })
   );
 
+  app.use("/uploads", (await import("express")).default.static(uploadDir));
+
+  app.post("/api/upload", requireAdmin, upload.single("file"), (req, res) => {
+    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+    res.json({ url: `/uploads/${req.file.filename}` });
+  });
+
   // ---- AUTH ----
   app.post("/api/admin/login", async (req, res) => {
     try {
@@ -58,6 +87,27 @@ export async function registerRoutes(
     const admin = await storage.getAdminById(req.session.adminId);
     if (!admin) return res.status(401).json({ message: "Not found" });
     res.json({ id: admin.id, name: admin.name, email: admin.email, role: admin.role });
+  });
+
+  app.patch("/api/admin/profile", requireAdmin, async (req, res) => {
+    try {
+      const admin = await storage.getAdminById(req.session.adminId!);
+      if (!admin) return res.status(404).json({ message: "Admin not found" });
+      const { currentPassword, newEmail, newPassword, name } = req.body;
+      if (currentPassword) {
+        const valid = await bcrypt.compare(currentPassword, admin.password);
+        if (!valid) return res.status(400).json({ message: "Current password is incorrect" });
+      }
+      const updates: any = {};
+      if (name) updates.name = name;
+      if (newEmail) updates.email = newEmail;
+      if (newPassword) {
+        if (!currentPassword) return res.status(400).json({ message: "Current password required to change password" });
+        updates.password = await bcrypt.hash(newPassword, 10);
+      }
+      const updated = await storage.updateAdmin(req.session.adminId!, updates);
+      res.json({ id: updated!.id, name: updated!.name, email: updated!.email, role: updated!.role });
+    } catch (e: any) { res.status(500).json({ message: e.message }); }
   });
 
   // ---- PUBLIC ROUTES ----

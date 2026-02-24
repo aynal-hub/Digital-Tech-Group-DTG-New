@@ -10,10 +10,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog, useConfirmDialog } from "@/components/confirm-dialog";
+import { ImageInput } from "@/components/image-input";
 import type { Testimonial } from "@shared/schema";
 
 export default function AdminTestimonials() {
   const { toast } = useToast();
+  const { confirm, dialogProps } = useConfirmDialog();
   const { data: testimonials, isLoading } = useQuery<Testimonial[]>({ queryKey: ["/api/testimonials"] });
   const [editing, setEditing] = useState<Testimonial | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +61,7 @@ export default function AdminTestimonials() {
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(t)}><Edit className="w-4 h-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => { if (confirm("Delete?")) del.mutate(t.id); }}><Trash2 className="w-4 h-4" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => confirm(() => del.mutate(t.id), "Delete Testimonial?", "This action cannot be undone.")}><Trash2 className="w-4 h-4" /></Button>
                 </div>
               </CardContent>
             </Card>
@@ -75,6 +78,7 @@ export default function AdminTestimonials() {
               <div className="space-y-2"><Label>Company</Label><Input value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} /></div>
             </div>
             <div className="space-y-2"><Label>Review</Label><Textarea value={form.review} onChange={(e) => setForm({ ...form, review: e.target.value })} rows={4} required /></div>
+            <ImageInput value={form.avatarUrl} onChange={(url) => setForm({ ...form, avatarUrl: url })} label="Avatar" />
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="space-y-2"><Label>Rating (1-5)</Label><Input type="number" min={1} max={5} value={form.rating} onChange={(e) => setForm({ ...form, rating: parseInt(e.target.value) || 5 })} /></div>
               <div className="space-y-2"><Label>Order Index</Label><Input type="number" value={form.orderIndex} onChange={(e) => setForm({ ...form, orderIndex: parseInt(e.target.value) || 0 })} /></div>
@@ -87,6 +91,7 @@ export default function AdminTestimonials() {
           </form>
         </DialogContent>
       </Dialog>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

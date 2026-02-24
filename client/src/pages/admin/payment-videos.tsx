@@ -10,10 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog, useConfirmDialog } from "@/components/confirm-dialog";
+import { ImageInput } from "@/components/image-input";
 import type { PaymentVideo, PaymentPlatform } from "@shared/schema";
 
 export default function AdminPaymentVideos() {
   const { toast } = useToast();
+  const { confirm, dialogProps } = useConfirmDialog();
   const { data: videos, isLoading } = useQuery<PaymentVideo[]>({ queryKey: ["/api/payment-videos"] });
   const { data: platforms } = useQuery<PaymentPlatform[]>({ queryKey: ["/api/payment-platforms"] });
   const [editing, setEditing] = useState<PaymentVideo | null>(null);
@@ -61,7 +64,7 @@ export default function AdminPaymentVideos() {
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(v)}><Edit className="w-4 h-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => { if (confirm("Delete?")) del.mutate(v.id); }}><Trash2 className="w-4 h-4" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => confirm(() => del.mutate(v.id), "Delete Video?", "This action cannot be undone.")}><Trash2 className="w-4 h-4" /></Button>
                 </div>
               </CardContent>
             </Card>
@@ -84,7 +87,7 @@ export default function AdminPaymentVideos() {
               </Select>
             </div>
             <div className="space-y-2"><Label>Video URL</Label><Input value={form.videoUrl} onChange={(e) => setForm({ ...form, videoUrl: e.target.value })} required /></div>
-            <div className="space-y-2"><Label>Thumbnail URL</Label><Input value={form.thumbnailUrl} onChange={(e) => setForm({ ...form, thumbnailUrl: e.target.value })} /></div>
+            <ImageInput value={form.thumbnailUrl} onChange={(url) => setForm({ ...form, thumbnailUrl: url })} label="Thumbnail" />
             <div className="space-y-2"><Label>Description</Label><Input value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2"><Label>Order Index</Label><Input type="number" value={form.orderIndex} onChange={(e) => setForm({ ...form, orderIndex: parseInt(e.target.value) || 0 })} /></div>
@@ -97,6 +100,7 @@ export default function AdminPaymentVideos() {
           </form>
         </DialogContent>
       </Dialog>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

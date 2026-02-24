@@ -11,10 +11,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog, useConfirmDialog } from "@/components/confirm-dialog";
+import { ImageInput } from "@/components/image-input";
 import type { TeamMember } from "@shared/schema";
 
 export default function AdminTeam() {
   const { toast } = useToast();
+  const { confirm, dialogProps } = useConfirmDialog();
   const { data: members, isLoading } = useQuery<TeamMember[]>({ queryKey: ["/api/team"] });
   const [editing, setEditing] = useState<TeamMember | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -65,7 +68,7 @@ export default function AdminTeam() {
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(m)}><Edit className="w-4 h-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => { if (confirm("Delete?")) del.mutate(m.id); }}><Trash2 className="w-4 h-4" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => confirm(() => del.mutate(m.id), "Delete Member?", "This action cannot be undone.")}><Trash2 className="w-4 h-4" /></Button>
                 </div>
               </CardContent>
             </Card>
@@ -82,7 +85,7 @@ export default function AdminTeam() {
               <div className="space-y-2"><Label>Designation</Label><Input value={form.designation} onChange={(e) => setForm({ ...form, designation: e.target.value })} required /></div>
             </div>
             <div className="space-y-2"><Label>Bio</Label><Textarea value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} rows={3} /></div>
-            <div className="space-y-2"><Label>Avatar URL</Label><Input value={form.avatarUrl} onChange={(e) => setForm({ ...form, avatarUrl: e.target.value })} /></div>
+            <ImageInput value={form.avatarUrl} onChange={(url) => setForm({ ...form, avatarUrl: url })} label="Avatar" />
             <div className="space-y-2"><Label>Social Links (JSON)</Label><Input value={form.socialLinks} onChange={(e) => setForm({ ...form, socialLinks: e.target.value })} placeholder='{"linkedin":"..."}' /></div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2"><Label>Order Index</Label><Input type="number" value={form.orderIndex} onChange={(e) => setForm({ ...form, orderIndex: parseInt(e.target.value) || 0 })} /></div>
@@ -98,6 +101,7 @@ export default function AdminTeam() {
           </form>
         </DialogContent>
       </Dialog>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

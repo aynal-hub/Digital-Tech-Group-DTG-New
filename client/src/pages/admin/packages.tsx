@@ -11,10 +11,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog, useConfirmDialog } from "@/components/confirm-dialog";
 import type { Package, Service } from "@shared/schema";
 
 export default function AdminPackages() {
   const { toast } = useToast();
+  const { confirm, dialogProps } = useConfirmDialog();
   const { data: packages, isLoading } = useQuery<Package[]>({ queryKey: ["/api/packages"] });
   const { data: services } = useQuery<Service[]>({ queryKey: ["/api/services"] });
   const [search, setSearch] = useState("");
@@ -68,7 +70,7 @@ export default function AdminPackages() {
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(p)}><Edit className="w-4 h-4" /></Button>
-                  <Button size="icon" variant="ghost" onClick={() => { if (confirm("Delete?")) del.mutate(p.id); }}><Trash2 className="w-4 h-4" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => confirm(() => del.mutate(p.id), "Delete Package?", "This action cannot be undone.")}><Trash2 className="w-4 h-4" /></Button>
                 </div>
               </CardContent>
             </Card>
@@ -110,6 +112,7 @@ export default function AdminPackages() {
           </form>
         </DialogContent>
       </Dialog>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

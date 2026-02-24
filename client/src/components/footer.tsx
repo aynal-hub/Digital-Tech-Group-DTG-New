@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Zap, Mail, Phone, MapPin } from "lucide-react";
-import { SiLinkedin, SiFacebook, SiInstagram, SiYoutube, SiTelegram } from "react-icons/si";
+import { SiLinkedin, SiFacebook, SiInstagram, SiYoutube, SiTelegram, SiWhatsapp } from "react-icons/si";
 import { useQuery } from "@tanstack/react-query";
 
 export function Footer() {
@@ -13,7 +13,8 @@ export function Footer() {
     { icon: SiInstagram, url: getSetting("social_instagram"), label: "Instagram" },
     { icon: SiLinkedin, url: getSetting("social_linkedin"), label: "LinkedIn" },
     { icon: SiYoutube, url: getSetting("social_youtube"), label: "YouTube" },
-    { icon: SiTelegram, url: getSetting("social_whatsapp"), label: "Telegram" },
+    { icon: SiWhatsapp, url: getSetting("social_whatsapp"), label: "WhatsApp" },
+    { icon: SiTelegram, url: getSetting("social_telegram"), label: "Telegram" },
   ].filter((l) => l.url);
 
   const quickLinks = [

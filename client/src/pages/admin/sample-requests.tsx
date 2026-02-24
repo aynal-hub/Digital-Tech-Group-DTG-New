@@ -8,10 +8,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog, useConfirmDialog } from "@/components/confirm-dialog";
 import type { SampleRequest, Service } from "@shared/schema";
 
 export default function AdminSampleRequests() {
   const { toast } = useToast();
+  const { confirm, dialogProps } = useConfirmDialog();
   const { data: requests, isLoading } = useQuery<SampleRequest[]>({ queryKey: ["/api/admin/sample-requests"] });
   const { data: services } = useQuery<Service[]>({ queryKey: ["/api/services"] });
   const [search, setSearch] = useState("");
@@ -72,12 +74,13 @@ export default function AdminSampleRequests() {
                   <Button size="sm" variant="outline" onClick={() => updateStatus.mutate({ id: selected.id, status: "reviewed" })}><CheckCircle className="w-4 h-4 mr-1" /> Mark Reviewed</Button>
                   <Button size="sm" variant="outline" onClick={() => updateStatus.mutate({ id: selected.id, status: "completed" })}>Complete</Button>
                 </div>
-                <Button size="sm" variant="destructive" onClick={() => { if (confirm("Delete?")) del.mutate(selected.id); }}><Trash2 className="w-4 h-4" /></Button>
+                <Button size="sm" variant="destructive" onClick={() => confirm(() => del.mutate(selected.id), "Delete Request?", "This action cannot be undone.")}><Trash2 className="w-4 h-4" /></Button>
               </div>
             </div>
           )}
         </DialogContent>
       </Dialog>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

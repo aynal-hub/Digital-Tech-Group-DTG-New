@@ -8,10 +8,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { ConfirmDialog, useConfirmDialog } from "@/components/confirm-dialog";
 import type { ContactMessage } from "@shared/schema";
 
 export default function AdminMessages() {
   const { toast } = useToast();
+  const { confirm, dialogProps } = useConfirmDialog();
   const { data: messages, isLoading } = useQuery<ContactMessage[]>({ queryKey: ["/api/admin/messages"] });
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<ContactMessage | null>(null);
@@ -72,7 +74,7 @@ export default function AdminMessages() {
               <div><p className="text-muted-foreground text-sm mb-1">Message</p><p className="text-sm whitespace-pre-wrap bg-muted/50 p-4 rounded-lg">{selected.message}</p></div>
               <p className="text-xs text-muted-foreground">Received: {selected.createdAt}</p>
               <div className="flex justify-end">
-                <Button size="sm" variant="destructive" onClick={() => { if (confirm("Delete this message?")) del.mutate(selected.id); }}>
+                <Button size="sm" variant="destructive" onClick={() => confirm(() => del.mutate(selected.id), "Delete Message?", "This action cannot be undone.")}>
                   <Trash2 className="w-4 h-4 mr-2" /> Delete
                 </Button>
               </div>
@@ -80,6 +82,7 @@ export default function AdminMessages() {
           )}
         </DialogContent>
       </Dialog>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

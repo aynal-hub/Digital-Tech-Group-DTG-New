@@ -19,6 +19,7 @@ const sidebarItems = [
   { label: "Payment Platforms", icon: CreditCard, href: "/admin/payment-platforms" },
   { label: "Payment Videos", icon: Video, href: "/admin/payment-videos" },
   { label: "Site Settings", icon: Settings, href: "/admin/settings" },
+  { label: "My Profile", icon: User, href: "/admin/profile" },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {

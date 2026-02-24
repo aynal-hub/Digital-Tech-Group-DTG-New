@@ -35,6 +35,7 @@ import AdminSampleRequests from "@/pages/admin/sample-requests";
 import AdminPaymentPlatforms from "@/pages/admin/payment-platforms";
 import AdminPaymentVideos from "@/pages/admin/payment-videos";
 import AdminSettings from "@/pages/admin/settings";
+import AdminProfile from "@/pages/admin/profile";
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -77,6 +78,7 @@ function Router() {
       <Route path="/admin/payment-platforms">{() => <AdminLayout><AdminPaymentPlatforms /></AdminLayout>}</Route>
       <Route path="/admin/payment-videos">{() => <AdminLayout><AdminPaymentVideos /></AdminLayout>}</Route>
       <Route path="/admin/settings">{() => <AdminLayout><AdminSettings /></AdminLayout>}</Route>
+      <Route path="/admin/profile">{() => <AdminLayout><AdminProfile /></AdminLayout>}</Route>
 
       <Route component={NotFound} />
     </Switch>
