@@ -13,6 +13,7 @@ import type { BlogPost } from "@shared/schema";
 
 export default function Blog() {
   const { data: posts, isLoading } = useQuery<BlogPost[]>({ queryKey: ["/api/blog"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -26,7 +27,7 @@ export default function Blog() {
 
   return (
     <>
-      <SEOHead title="Blog - Digital Tech Group" description="Read our latest insights on recruitment, sourcing & digital marketing." />
+      <SEOHead title={`Blog - ${settings?.site_name || "Digital Tech Group"}`} description="Read our latest insights on recruitment, sourcing & digital marketing." />
 
       <section className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -31,13 +31,14 @@ function extractYouTubeId(url: string) {
 export default function PaymentGuidelines() {
   const { data: platforms, isLoading: loadingPlatforms } = useQuery<PaymentPlatform[]>({ queryKey: ["/api/payment-platforms"] });
   const { data: videos, isLoading: loadingVideos } = useQuery<PaymentVideo[]>({ queryKey: ["/api/payment-videos"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
 
   const activePlatforms = platforms?.filter((p) => p.isActive) || [];
   const activeVideos = videos?.filter((v) => v.isActive) || [];
 
   return (
     <>
-      <SEOHead title="Payment Guidelines - Digital Tech Group" description="How to send payments to Digital Tech Group safely and easily." />
+      <SEOHead title={`Payment Guidelines - ${settings?.site_name || "Digital Tech Group"}`} description={`How to send payments to ${settings?.site_name || "Digital Tech Group"} safely and easily.`} />
 
       <section className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

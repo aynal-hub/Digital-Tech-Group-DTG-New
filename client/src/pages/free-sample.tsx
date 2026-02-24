@@ -32,6 +32,7 @@ export default function FreeSample() {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const { data: services } = useQuery<Service[]>({ queryKey: ["/api/services"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
 
   const form = useForm<SampleFormData>({
     resolver: zodResolver(sampleSchema),
@@ -54,7 +55,7 @@ export default function FreeSample() {
   if (submitted) {
     return (
       <>
-        <SEOHead title="Request Submitted - Digital Tech Group" />
+        <SEOHead title={`Request Submitted - ${settings?.site_name || "Digital Tech Group"}`} />
         <section className="pt-32 pb-20 min-h-screen flex items-center">
           <div className="max-w-md mx-auto px-4 text-center space-y-6">
             <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
@@ -71,7 +72,7 @@ export default function FreeSample() {
 
   return (
     <>
-      <SEOHead title="Free Sample Request - Digital Tech Group" description="Request a free sample of our services." />
+      <SEOHead title={`Free Sample Request - ${settings?.site_name || "Digital Tech Group"}`} description="Request a free sample of our services." />
 
       <section className="pt-32 pb-20">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">

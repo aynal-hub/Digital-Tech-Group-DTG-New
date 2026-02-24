@@ -13,6 +13,7 @@ import type { Package, Service } from "@shared/schema";
 export default function Packages() {
   const { data: packages, isLoading } = useQuery<Package[]>({ queryKey: ["/api/packages"] });
   const { data: services } = useQuery<Service[]>({ queryKey: ["/api/services"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
   const [activeService, setActiveService] = useState<number | null>(null);
 
   const activePackages = packages?.filter((p) => p.isActive) || [];
@@ -28,7 +29,7 @@ export default function Packages() {
 
   return (
     <>
-      <SEOHead title="Pricing Packages - Digital Tech Group" description="Explore our affordable pricing packages for recruitment, sourcing & digital marketing services." />
+      <SEOHead title={`Pricing Packages - ${settings?.site_name || "Digital Tech Group"}`} description="Explore our affordable pricing packages for recruitment, sourcing & digital marketing services." />
 
       <section className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

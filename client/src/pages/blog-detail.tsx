@@ -11,6 +11,7 @@ import type { BlogPost } from "@shared/schema";
 export default function BlogDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: posts, isLoading } = useQuery<BlogPost[]>({ queryKey: ["/api/blog"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
   const post = posts?.find((p) => p.slug === slug);
 
   if (isLoading) return <div className="pt-32 pb-20 max-w-4xl mx-auto px-4"><Skeleton className="h-8 w-32 mb-8" /><Skeleton className="h-64 mb-6" /></div>;
@@ -18,7 +19,7 @@ export default function BlogDetail() {
 
   return (
     <>
-      <SEOHead title={`${post.title} - Digital Tech Group`} description={post.metaDescription || post.excerpt || ""} />
+      <SEOHead title={`${post.title} - ${settings?.site_name || "Digital Tech Group"}`} description={post.metaDescription || post.excerpt || ""} />
       <article className="pt-32 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link href="/blog"><span className="inline-flex items-center gap-2 text-sm text-muted-foreground mb-8 cursor-pointer"><ArrowLeft className="w-4 h-4" /> Back to Blog</span></Link>

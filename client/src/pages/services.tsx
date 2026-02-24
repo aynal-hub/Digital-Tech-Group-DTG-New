@@ -13,6 +13,7 @@ import type { Service } from "@shared/schema";
 
 export default function Services() {
   const { data: services, isLoading } = useQuery<Service[]>({ queryKey: ["/api/services"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
 
@@ -28,7 +29,7 @@ export default function Services() {
 
   return (
     <>
-      <SEOHead title="Services - Digital Tech Group" description="Professional recruitment, sourcing & digital marketing services." />
+      <SEOHead title={`Services - ${settings?.site_name || "Digital Tech Group"}`} description="Professional recruitment, sourcing & digital marketing services." />
 
       <section className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

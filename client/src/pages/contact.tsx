@@ -58,7 +58,7 @@ export default function Contact() {
 
   return (
     <>
-      <SEOHead title="Contact Us - Digital Tech Group" description="Get in touch with Digital Tech Group for recruitment, sourcing & digital marketing services." />
+      <SEOHead title={`Contact Us - ${settings?.site_name || "Digital Tech Group"}`} description={`Get in touch with ${settings?.site_name || "Digital Tech Group"} for recruitment, sourcing & digital marketing services.`} />
 
       <section className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

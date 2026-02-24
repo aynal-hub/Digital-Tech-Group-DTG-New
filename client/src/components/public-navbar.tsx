@@ -4,6 +4,7 @@ import { Menu, X, Sun, Moon, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { motion, AnimatePresence } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -23,6 +24,7 @@ export function PublicNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -49,7 +51,7 @@ export function PublicNavbar() {
             <div className="w-9 h-9 bg-gradient-to-br from-primary to-primary/70 rounded-lg flex items-center justify-center shadow-md shadow-primary/20">
               <span className="text-primary-foreground font-black text-sm tracking-tighter">DTG</span>
             </div>
-            <span className="hidden sm:inline text-sm font-bold tracking-wide">Digital Tech Group</span>
+            <span className="hidden sm:inline text-sm font-bold tracking-wide">{settings?.site_name || "Digital Tech Group"}</span>
           </Link>
 
           <div className="hidden xl:flex items-center gap-1 flex-wrap">

@@ -9,18 +9,19 @@ import type { TeamMember } from "@shared/schema";
 
 export default function Team() {
   const { data: members, isLoading } = useQuery<TeamMember[]>({ queryKey: ["/api/team"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
   const activeMembers = members?.filter((m) => m.isActive) || [];
 
   return (
     <>
-      <SEOHead title="Our Team - Digital Tech Group" description="Meet our talented team of professionals." />
+      <SEOHead title={`Our Team - ${settings?.site_name || "Digital Tech Group"}`} description="Meet our talented team of professionals." />
 
       <section className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center max-w-3xl mx-auto" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <Badge variant="secondary" className="mb-4">Our Team</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold mb-4">Meet Our Experts</h1>
-            <p className="text-muted-foreground text-lg">The talented people behind Digital Tech Group</p>
+            <p className="text-muted-foreground text-lg">{`The talented people behind ${settings?.site_name || "Digital Tech Group"}`}</p>
           </motion.div>
         </div>
       </section>

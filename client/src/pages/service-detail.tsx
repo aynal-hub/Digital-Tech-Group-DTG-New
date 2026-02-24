@@ -13,6 +13,7 @@ export default function ServiceDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: services, isLoading } = useQuery<Service[]>({ queryKey: ["/api/services"] });
   const { data: packages } = useQuery<PackageType[]>({ queryKey: ["/api/packages"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
 
   const service = services?.find((s) => s.slug === slug);
   const servicePackages = packages?.filter((p) => p.serviceId === service?.id && p.isActive) || [];
@@ -39,7 +40,7 @@ export default function ServiceDetail() {
 
   return (
     <>
-      <SEOHead title={`${service.title} - Digital Tech Group`} description={service.metaDescription || service.shortDescription || service.description} />
+      <SEOHead title={`${service.title} - ${settings?.site_name || "Digital Tech Group"}`} description={service.metaDescription || service.shortDescription || service.description} />
 
       <section className="pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

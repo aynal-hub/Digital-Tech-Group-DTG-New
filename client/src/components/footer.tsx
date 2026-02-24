@@ -44,11 +44,11 @@ export function Footer() {
                 <Zap className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="text-lg font-bold">
-                Digital<span className="text-primary">Tech</span> Group
+                {getSetting("site_name") || "Digital Tech Group"}
               </span>
             </div>
             <p className="text-sm opacity-70 leading-relaxed">
-              Professional Recruitment, Sourcing & Digital Marketing Agency delivering world-class solutions.
+              {getSetting("site_description") || "Professional Recruitment, Sourcing & Digital Marketing Agency delivering world-class solutions."}
             </p>
             {socialLinks.length > 0 && (
               <div className="flex items-center gap-3 flex-wrap">
@@ -123,9 +123,11 @@ export function Footer() {
       <div className="border-t border-background/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm opacity-50">
-            &copy; {new Date().getFullYear()} Digital Tech Group. All rights reserved.
+            &copy; {new Date().getFullYear()} {getSetting("site_name") || "Digital Tech Group"}. All rights reserved.
           </p>
-          <p className="text-sm opacity-50">Founded by MD Aynal Hossain</p>
+          {getSetting("founder_name") && (
+            <p className="text-sm opacity-50">Founded by {getSetting("founder_name")}</p>
+          )}
         </div>
       </div>
     </footer>

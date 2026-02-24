@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SEOHead } from "@/components/seo-head";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 
 const fadeUp = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } };
 
@@ -25,9 +26,14 @@ const highlights = [
 ];
 
 export default function About() {
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
+  const siteName = settings?.site_name || "Digital Tech Group";
+  const founderName = settings?.founder_name || "";
+  const siteTagline = settings?.site_tagline || "Recruitment, Sourcing & Digital Marketing Agency";
+
   return (
     <>
-      <SEOHead title="About Us - Digital Tech Group" description="Learn about Digital Tech Group - a leading recruitment, sourcing & digital marketing agency." />
+      <SEOHead title={`About Us - ${siteName}`} description={`Learn about ${siteName} - a leading ${siteTagline.toLowerCase()}.`} />
 
       <section className="pt-32 pb-20" data-testid="section-about-hero">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,7 +43,7 @@ export default function About() {
               Driving Digital <span className="text-primary">Transformation</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Digital Tech Group is a professional recruitment, sourcing, and digital marketing agency dedicated to helping businesses scale and succeed in the digital landscape.
+              {siteName} is a professional {siteTagline.toLowerCase()} dedicated to helping businesses scale and succeed in the digital landscape.
             </p>
           </motion.div>
         </div>
@@ -50,7 +56,7 @@ export default function About() {
               <Badge variant="secondary" className="mb-4">Our Story</Badge>
               <h2 className="text-3xl font-bold mb-6">Founded with a Vision</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Digital Tech Group was founded by MD Aynal Hossain with a clear vision: to bridge the gap between talented professionals and businesses seeking growth through digital innovation.
+                {siteName} was founded{founderName ? ` by ${founderName}` : ""} with a clear vision: to bridge the gap between talented professionals and businesses seeking growth through digital innovation.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-6">
                 What started as a small recruitment consultancy has grown into a full-service digital agency, serving clients across multiple industries and geographies. Our commitment to excellence and client satisfaction drives everything we do.

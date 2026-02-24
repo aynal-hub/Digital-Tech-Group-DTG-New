@@ -10,11 +10,12 @@ import type { Testimonial } from "@shared/schema";
 
 export default function Testimonials() {
   const { data: testimonials, isLoading } = useQuery<Testimonial[]>({ queryKey: ["/api/testimonials"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
   const activeTestimonials = testimonials?.filter((t) => t.isActive) || [];
 
   return (
     <>
-      <SEOHead title="Client Testimonials - Digital Tech Group" description="See what our clients say about working with Digital Tech Group." />
+      <SEOHead title={`Client Testimonials - ${settings?.site_name || "Digital Tech Group"}`} description={`See what our clients say about working with ${settings?.site_name || "Digital Tech Group"}.`} />
 
       <section className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

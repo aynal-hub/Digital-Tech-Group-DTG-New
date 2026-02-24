@@ -11,6 +11,7 @@ import type { Project } from "@shared/schema";
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: projects, isLoading } = useQuery<Project[]>({ queryKey: ["/api/projects"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
   const project = projects?.find((p) => p.slug === slug);
 
   if (isLoading) {
@@ -23,7 +24,7 @@ export default function ProjectDetail() {
 
   return (
     <>
-      <SEOHead title={`${project.title} - Digital Tech Group`} description={project.metaDescription || project.shortDescription || project.description} />
+      <SEOHead title={`${project.title} - ${settings?.site_name || "Digital Tech Group"}`} description={project.metaDescription || project.shortDescription || project.description} />
       <section className="pt-32 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link href="/portfolio"><span className="inline-flex items-center gap-2 text-sm text-muted-foreground mb-8 cursor-pointer"><ArrowLeft className="w-4 h-4" /> Back to Portfolio</span></Link>

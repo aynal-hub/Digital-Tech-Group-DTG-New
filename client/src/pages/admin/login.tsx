@@ -7,10 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { useQuery } from "@tanstack/react-query";
 
 export default function AdminLogin() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,7 +39,7 @@ export default function AdminLogin() {
               <Zap className="w-7 h-7 text-primary-foreground" />
             </div>
             <h1 className="text-2xl font-bold">Admin Login</h1>
-            <p className="text-sm text-muted-foreground mt-1">Digital Tech Group</p>
+            <p className="text-sm text-muted-foreground mt-1">{settings?.site_name || "Digital Tech Group"}</p>
           </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">

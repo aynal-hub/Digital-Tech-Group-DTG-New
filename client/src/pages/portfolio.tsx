@@ -13,6 +13,7 @@ import type { Project } from "@shared/schema";
 
 export default function Portfolio() {
   const { data: projects, isLoading } = useQuery<Project[]>({ queryKey: ["/api/projects"] });
+  const { data: settings } = useQuery<Record<string, string>>({ queryKey: ["/api/settings"] });
   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
 
@@ -26,7 +27,7 @@ export default function Portfolio() {
 
   return (
     <>
-      <SEOHead title="Portfolio - Digital Tech Group" description="Explore our portfolio of successful projects." />
+      <SEOHead title={`Portfolio - ${settings?.site_name || "Digital Tech Group"}`} description="Explore our portfolio of successful projects." />
 
       <section className="pt-32 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

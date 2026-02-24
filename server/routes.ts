@@ -86,7 +86,7 @@ export async function registerRoutes(
     if (!req.session.adminId) return res.status(401).json({ message: "Not logged in" });
     const admin = await storage.getAdminById(req.session.adminId);
     if (!admin) return res.status(401).json({ message: "Not found" });
-    res.json({ id: admin.id, name: admin.name, email: admin.email, role: admin.role });
+    res.json({ id: admin.id, name: admin.name, email: admin.email, role: admin.role, isSuperAdmin: admin.isSuperAdmin });
   });
 
   app.patch("/api/admin/profile", requireAdmin, async (req, res) => {

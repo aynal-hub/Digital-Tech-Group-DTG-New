@@ -10,6 +10,7 @@ export const admins = pgTable("admins", {
   name: text("name").notNull(),
   role: text("role").notNull().default("ADMIN"),
   avatarUrl: text("avatar_url"),
+  isSuperAdmin: boolean("is_super_admin").default(false),
 });
 
 export const services = pgTable("services", {

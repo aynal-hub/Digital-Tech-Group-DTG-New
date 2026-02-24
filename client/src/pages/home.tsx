@@ -71,8 +71,8 @@ export default function Home() {
   return (
     <>
       <SEOHead
-        title="Digital Tech Group - Recruitment, Sourcing & Digital Marketing Agency"
-        description="Professional Recruitment, Sourcing & Digital Marketing Agency delivering world-class solutions for your business growth."
+        title={settings?.meta_title || `${settings?.site_name || "Digital Tech Group"} - ${settings?.site_tagline || "Recruitment, Sourcing & Digital Marketing Agency"}`}
+        description={settings?.meta_description || settings?.site_description || "Professional Recruitment, Sourcing & Digital Marketing Agency delivering world-class solutions for your business growth."}
       />
 
       {/* Hero Section */}
@@ -87,7 +87,7 @@ export default function Home() {
             <motion.div className="space-y-8" {...fadeUp}>
               <Badge variant="secondary" className="gap-2">
                 <Sparkles className="w-3 h-3" />
-                Welcome to Digital Tech Group
+                Welcome to {settings?.site_name || "Digital Tech Group"}
               </Badge>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
                 We Build Your{" "}
