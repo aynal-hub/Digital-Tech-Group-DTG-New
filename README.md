@@ -3,7 +3,6 @@
 <p align="center">
 Official Business Website of Digital Tech Group  
 <br/>
-🌐 <a href="https://digitaltechgroups.com" target="_blank">digitaltechgroups.com</a>
 </p>
 
 ---
@@ -46,13 +45,7 @@ The platform includes a complete admin dashboard for managing website content dy
 ✔ SEO Optimized Structure  
 ✔ Dynamic Content Control  
 ✔ Secure Backend Integration  
-✔ Clean and Modern UI  
-
----
-
-## 🌍 Live Website
-
-👉 https://digitaltechgroups.com  
+✔ Clean and Modern UI
 
 ---
 
